@@ -13,15 +13,15 @@ A simple Python script to record Twitch streams using asyncio and streamlink lib
 
 1. Install [python](https://www.python.org/downloads/) and ensure you add to PATH when installing.
 
-2. Install the required Python libraries:
+2. Download or clone this repository.
+
+3. Install the required Python libraries:
 
 ``pip install asyncio streamlink configparser``
 
-3. Install `ffmpeg` and ensure it's in your system PATH:
+4. Install `ffmpeg` and ensure it's in your system PATH:
 - [Windows guide](https://www.wikihow.com/Install-FFmpeg-on-Windows)
 - [Other OS guide](https://www.hostinger.com/tutorials/how-to-install-ffmpeg)
-
-4. Download or clone this repository.
 
 ## Usage
 
