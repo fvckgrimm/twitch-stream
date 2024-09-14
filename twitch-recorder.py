@@ -31,6 +31,22 @@ if not os.path.exists(config_file_path):
 # Load the config file
 config.read(config_file_path)
 
+
+def get_valid_path(path):
+    # Expand user directory if path starts with ~
+    expanded_path = os.path.expanduser(path)
+    # Normalize the path (converts / to \ on Windows if needed)
+    normalized_path = os.path.normpath(expanded_path)
+    # Check if the path exists, if not, create it
+    if not os.path.exists(normalized_path):
+        try:
+            os.makedirs(normalized_path)
+        except OSError as e:
+            logging.error(f"Error creating directory: {e}")
+            return None
+    return normalized_path
+
+
 # Get username from argument or prompt
 if len(sys.argv) > 1:
     twitch_username = sys.argv[1]
@@ -42,7 +58,12 @@ output_folder = config["DEFAULT"]["output_folder"]
 # If the output_folder variable is not set, ask the user for input
 if not output_folder:
     output_folder = input("Enter the output folder path for recordings: ")
-    config["DEFAULT"]["output_folder"] = output_folder
+    output_folder = get_valid_path(output_folder)
+    if output_folder:
+        config["DEFAULT"]["output_folder"] = output_folder
+    else:
+        logging.error("Invalid output folder. Exiting.")
+        sys.exit(1)
 
 # Save the variables to the config file
 with open(config_file_path, "w") as configfile:
