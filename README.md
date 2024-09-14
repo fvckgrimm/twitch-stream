@@ -3,18 +3,20 @@ This Python code is a simple Twitch stream recorder using the asyncio & streamli
 
 ## Features
 * Record twitch streams right as they are happening
-* Save streams as mp4
+* Save streams as ts files (more reliable in case of failures)
+* Convert to mp4
 * Easy set up & usage
 
 ## Setup
 1. Install the necessary python libraries [with pip](https://youtu.be/9z7gGUbAj5U?t=13) through cmd / terminal:
-``pip install asyncio streamlink``
+
+``pip install asyncio streamlink configparser``
 
 2. Install ``ffmpeg`` and make sure it's declared as a system environment variable
   
-      Guide for Windows: https://www.wikihow.com/Install-FFmpeg-on-Windows
+     - Guide for Windows: https://www.wikihow.com/Install-FFmpeg-on-Windows
   
-      All other Operating systems: https://www.hostinger.com/tutorials/how-to-install-ffmpeg
+     - All other Operating systems: https://www.hostinger.com/tutorials/how-to-install-ffmpeg
 
 3. Clone or download the twitch stream recorder repository from GitHub & extract the files.
 
