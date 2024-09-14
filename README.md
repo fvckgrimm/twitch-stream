@@ -1,38 +1,50 @@
 # Twitch Stream Recorder
-This Python code is a simple Twitch stream recorder using the asyncio & streamlink libraries, which allows you to record the best available quality livestream of a Twitch streamer and save the recording as a mp4 file to your computer. The reason I made this is, because other existing libraries were either broken or made things too complicated bothering people to get their twitch API tokens etc.
+
+A simple Python script to record Twitch streams using asyncio and streamlink libraries. This tool allows you to record the best available quality livestream of a Twitch streamer without the need for API tokens or complex setups.
 
 ## Features
-* Record twitch streams right as they are happening
-* Save streams as ts files (more reliable in case of failures)
-* Convert to mp4
-* Easy set up & usage
+
+- Record Twitch streams in real-time
+- Save streams as .ts files (more reliable in case of failures)
+- Option to convert .ts files to .mp4
+- Easy setup and usage
 
 ## Setup
-1. Install the necessary python libraries [with pip](https://youtu.be/9z7gGUbAj5U?t=13) through cmd / terminal:
+
+1. Install [python](https://www.python.org/downloads/) and ensure you add to PATH when installing.
+
+2. Install the required Python libraries:
 
 ``pip install asyncio streamlink configparser``
 
-2. Install ``ffmpeg`` and make sure it's declared as a system environment variable
-  
-     - Guide for Windows: https://www.wikihow.com/Install-FFmpeg-on-Windows
-  
-     - All other Operating systems: https://www.hostinger.com/tutorials/how-to-install-ffmpeg
+3. Install `ffmpeg` and ensure it's in your system PATH:
+- [Windows guide](https://www.wikihow.com/Install-FFmpeg-on-Windows)
+- [Other OS guide](https://www.hostinger.com/tutorials/how-to-install-ffmpeg)
 
-3. Clone or download the twitch stream recorder repository from GitHub & extract the files.
-
-4. Locate the extracted files and click on ``twitch-recorder.py``
+4. Download or clone this repository.
 
 ## Usage
-The first time you start up the program, it will ask you to declare a;
- 1. output folder location, where all future live streams should be saved inside.
- 2. twitch live streamers username you want to record
 
+Run the script:
 
+```python
+python3 twitch-recorder.py [username]
+```
 
-Once the code is running, it will retrieve the best available stream URL for the entered Twitch username, and then use the ffmpeg command to record the stream to a file in the specified output folder. The file name will include the Twitch username and the date and time, which the recorder was started at.
-The code will run continuously until you stop it manually with a keyboard interrupt (Ctrl+C on Windows & Linux, or Command+C on macOS).
+You can provide the username as an argument or run without it to be prompted for input.
 
-After you set the recordings output folder location it will create a file named ``config.ini`` which will store the location permanently, so you only need to enter any streamers username you want to record in the future instead.
+On first run, you'll be asked to set an output folder for recordings. This will be saved in `config.ini` for future use.
+
+The script will continuously check for the stream and start recording when it's live. To stop, use Ctrl+C (Cmd+C on macOS).
+
+Note: If you choose not to convert the .ts files, you can watch them with media players like [MPV](https://mpv.io/) or [VLC](https://www.videolan.org/).
+
+## Configuration
+
+Edit `config.ini` to change settings:
+- `convert_to_mp4`: Set to "True" or "False"
+- `use_ffmpeg_convert`: Set to "True" or "False" (only applies if `convert_to_mp4` is True)
+- `check_interval`: Time in seconds between checks for live streams
 
 ## Disclaimer
 Please note that recording and distributing Twitch streams without the permission of the content creator may violate Twitch's terms of service and could lead to legal consequences. Use this code responsibly and with respect for the creators whose content you are recording.
