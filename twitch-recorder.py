@@ -89,6 +89,13 @@ async def get_best_stream_url(username):
         # print("No available streams found.")
 
 
+user_vod_folder = os.path.join(output_folder, twitch_username, "vods")
+user_vod_folder = get_valid_path(user_vod_folder)
+if not user_vod_folder:
+    logging.error(f"Failed to create folder for {twitch_username}. Exiting.")
+    sys.exit(1)
+
+
 async def record_stream(username):
     try:
         while True:
@@ -101,7 +108,7 @@ async def record_stream(username):
 
                 timestamp = datetime.now().strftime("%d_%m_%y-%H_%M")
                 ts_filename = f"{username}-{timestamp}.ts"
-                ts_filepath = os.path.join(output_folder, ts_filename)
+                ts_filepath = os.path.join(user_vod_folder, ts_filename)
 
                 # Use streamlink command instead of direct ffmpeg
                 streamlink_cmd = [
@@ -118,7 +125,7 @@ async def record_stream(username):
 
                 if convert_to_mp4:
                     mp4_filename = f"{username}-{timestamp}.mp4"
-                    mp4_filepath = os.path.join(output_folder, mp4_filename)
+                    mp4_filepath = os.path.join(user_vod_folder, mp4_filename)
 
                     if use_ffmpeg_convert:
                         # Convert .ts to .mp4 using ffmpeg

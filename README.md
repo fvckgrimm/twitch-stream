@@ -38,6 +38,11 @@ On first run, you'll be asked to set an output folder for recordings. This will 
 The script will continuously check for the stream and start recording when it's live. To stop, use Ctrl+C (Cmd+C on macOS).
 
 Note: If you choose not to convert the .ts files, you can watch them with media players like [MPV](https://mpv.io/) or [VLC](https://www.videolan.org/).
+### Run with mprocs
+
+An example config for [mprocs](https://github.com/pvolok/mprocs) is provided to allow running multiple instances for multiple streamers in an easy to manage way. Combine with a tool like [zellij](https://github.com/zellij-org/zellij) or [tmux](https://github.com/tmux/tmux/wiki) to allow for background checking and recording.
+
+Once the mprocs.yaml file is set, simply run `mprocs`.
 
 ## Configuration
 
