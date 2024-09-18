@@ -92,26 +92,32 @@ async def get_best_stream_url(username):
 async def record_stream(username):
     try:
         while True:
-            m3u8_url = await get_best_stream_url(username)
-            if m3u8_url:
+            streams = streamlink.streams(
+                f"https://www.twitch.tv/{username}", options={"disable-ads": True}
+            )
+            if "best" in streams:
+                # best_stream = streams["best"]
+                logging.info(f"Stream is live! Recording {username}'s stream.")
+
                 timestamp = datetime.now().strftime("%d_%m_%y-%H_%M")
-                ts_filename = f"{twitch_username}-{timestamp}.ts"
+                ts_filename = f"{username}-{timestamp}.ts"
                 ts_filepath = os.path.join(output_folder, ts_filename)
 
-                # Record stream to .ts file
-                ffmpeg_record_cmd = [
-                    "ffmpeg",
-                    "-i",
-                    m3u8_url,
-                    "-c",
-                    "copy",
+                # Use streamlink command instead of direct ffmpeg
+                streamlink_cmd = [
+                    "streamlink",
+                    "--twitch-disable-ads",
+                    f"https://www.twitch.tv/{username}",
+                    "best",
+                    "-o",
                     ts_filepath,
                 ]
-                process = await asyncio.create_subprocess_exec(*ffmpeg_record_cmd)
+
+                process = await asyncio.create_subprocess_exec(*streamlink_cmd)
                 await process.communicate()
 
                 if convert_to_mp4:
-                    mp4_filename = f"{twitch_username}-{timestamp}.mp4"
+                    mp4_filename = f"{username}-{timestamp}.mp4"
                     mp4_filepath = os.path.join(output_folder, mp4_filename)
 
                     if use_ffmpeg_convert:
@@ -136,10 +142,15 @@ async def record_stream(username):
                     logging.info(f"Converted and saved as: {mp4_filepath}")
                 else:
                     logging.info(f"Saved as: {ts_filepath}")
+
+                logging.info(
+                    "Stream ended. Waiting briefly before checking for the next stream..."
+                )
+                await asyncio.sleep(check_interval)
             else:
                 logging.info(f"No available streams found for {username}.")
                 logging.info(
-                    f"No stream available. Checking for {username} stream again in {check_interval} seconds..."
+                    f"Checking for {username} stream again in {check_interval} seconds..."
                 )
                 await asyncio.sleep(check_interval)
     except asyncio.CancelledError:
